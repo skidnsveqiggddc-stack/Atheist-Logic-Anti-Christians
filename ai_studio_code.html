@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loading...</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  /* Loading Screen Overlay */
+  #loader {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #f4f4f9;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s, visibility 0.5s;
+  }
+
+  .spinner {
+    border: 8px solid #e0e0e0;
+    border-top: 8px solid #007bff; /* A modern blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1.5s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Modal Prompt Styles */
+  #modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5); /* Dimmed background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-content {
+    background-color: #ffffff;
+    padding: 30px 40px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    animation: fadeIn 0.5s;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .modal-content h2 {
+    margin-top: 0;
+    font-size: 1.5em;
+  }
+  
+  .modal-content p {
+      margin: 15px 0 25px;
+      font-size: 1.1em;
+      line-height: 1.5;
+  }
+
+  .modal-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .modal-buttons button {
+    padding: 12px 25px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  #yesBtn {
+    background-color: #28a745; /* Green */
+    color: white;
+  }
+  
+  #yesBtn:hover {
+      background-color: #218838;
+      transform: scale(1.05);
+  }
+
+  #noBtn {
+    background-color: #dc3545; /* Red */
+    color: white;
+  }
+
+  #noBtn:hover {
+      background-color: #c82333;
+      transform: scale(1.05);
+  }
+  
+  /* Message shown if user clicks "No" */
+  #farewell-message {
+      display: none;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div id="loader">
+  <div class="spinner"></div>
+</div>
+
+<!-- Modal UI -->
+<div id="modal">
+  <div class="modal-content">
+    <h2>Confirmation</h2>
+    <p>Proceed to the website called "atheist questions"?</p>
+    <div class="modal-buttons">
+      <button id="yesBtn">Yes</button>
+      <button id="noBtn">No</button>
+    </div>
+  </div>
+</div>
+
+<!-- Fallback content if user says no -->
+<div id="farewell-message">
+    <h1>You have chosen not to proceed.</h1>
+</div>
+
+
+<script>
+  // The destination website URL is set here
+  const websiteUrl = 'https://example.com';
+
+  const loader = document.getElementById('loader');
+  const modal = document.getElementById('modal');
+  const yesBtn = document.getElementById('yesBtn');
+  const noBtn = document.getElementById('noBtn');
+  const farewellMessage = document.getElementById('farewell-message');
+
+  // After the page loads, hide loader and show the modal
+  window.addEventListener('load', function(){
+    // Set a short timeout to make the loading feel more natural
+    setTimeout(() => {
+        loader.style.opacity = '0';
+        loader.style.visibility = 'hidden';
+        modal.style.display = 'flex'; // Use flex to center the content
+    }, 1500); // 1.5 seconds loading time
+  });
+
+  // If 'Yes' is clicked, redirect to the specified URL
+  yesBtn.addEventListener('click', function() {
+    // Show a quick message before redirecting
+    const modalContent = document.querySelector('.modal-content');
+    modalContent.innerHTML = '<p>Redirecting you now...</p>';
+    
+    setTimeout(() => {
+        window.location.href = websiteUrl;
+    }, 500); // Wait half a second before redirecting
+  });
+
+  // If 'No' is clicked, hide the modal and show a message
+  noBtn.addEventListener('click', function() {
+    modal.style.display = 'none';
+    farewellMessage.style.display = 'block';
+  });
+</script>
+
+</body>
+</html>
